@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import * as z from 'zod'
-import axios from 'axios'
-import Link from 'next/link'
-import toast from 'react-hot-toast'
-import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
-import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod';
+import axios from 'axios';
+import Link from 'next/link';
+import toast from 'react-hot-toast';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormItem,
@@ -17,34 +17,34 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-  FormDescription,
-} from '@/components/ui/form'
+  FormDescription
+} from '@/components/ui/form';
 
 const formSchema = z.object({
-  title: z.string().trim().min(1, 'Title is required'),
-})
+  title: z.string().trim().min(1, 'Title is required')
+});
 
 const CreatePage = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-    },
-  })
+      title: ''
+    }
+  });
 
-  const { isSubmitting, isValid } = form.formState
+  const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post('/api/courses', values)
-      router.push(`/teacher/courses/${response.data.id}`)
-      toast.success('Course created')
+      const response = await axios.post('/api/courses', values);
+      router.push(`/teacher/courses/${response.data.id}`);
+      toast.success('Course created');
     } catch (error) {
-      toast.error('Something went wrong')
+      toast.error('Something went wrong');
     }
-  }
+  };
 
   return (
     <div className="flex h-full max-w-5xl p-6 mx-auto md:items-center md:justify-center">
@@ -67,7 +67,6 @@ const CreatePage = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Course Title</FormLabel>
-
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
@@ -100,7 +99,7 @@ const CreatePage = () => {
         </Form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CreatePage
+export default CreatePage;

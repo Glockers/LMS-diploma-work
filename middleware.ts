@@ -1,9 +1,12 @@
-import { authMiddleware } from '@clerk/nextjs'
+import { authMiddleware } from '@clerk/nextjs';
+import { NextResponse } from 'next/server';
+
+const publicRoutesThatShouldRedirectAfterAuth = ['/api/webhook'];
 
 export default authMiddleware({
-  publicRoutes: ['/api/webhook'],
-})
+  publicRoutes: [...publicRoutesThatShouldRedirectAfterAuth]
+});
 
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
-}
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)']
+};

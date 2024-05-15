@@ -1,19 +1,19 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { BookOpen } from 'lucide-react'
+import Link from 'next/link';
+import Image from 'next/image';
+import { BookOpen } from 'lucide-react';
 
-import { formatPrice } from '@/lib/format'
-import { IconBadge } from '@/components/icon-badge'
-import { CourseProgress } from '@/components/course-progress'
+import { formatPrice } from '@/lib/format';
+import { IconBadge } from '@/components/icon-badge';
+import { CourseProgress } from '@/components/course-progress';
 
 interface CourseCardProps {
-  id: string
-  title: string
-  price: number
-  imageUrl: string
-  category: string
-  chaptersLength: number
-  progress: number | null
+  id: string;
+  title: string;
+  price: number;
+  imageUrl: string;
+  category: string;
+  chaptersLength: number;
+  progress: number | null;
 }
 
 export const CourseCard = ({
@@ -23,7 +23,7 @@ export const CourseCard = ({
   imageUrl,
   progress,
   category,
-  chaptersLength,
+  chaptersLength
 }: CourseCardProps) => {
   return (
     <Link href={`/courses/${id}`}>
@@ -62,5 +62,5 @@ export const CourseCard = ({
         </div>
       </div>
     </Link>
-  )
-}
+  );
+};

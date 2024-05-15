@@ -1,27 +1,27 @@
-import { File } from 'lucide-react'
-import { auth } from '@clerk/nextjs'
-import { redirect } from 'next/navigation'
+import { File } from 'lucide-react';
+import { auth } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
-import { Banner } from '@/components/banner'
-import { Preview } from '@/components/preview'
-import { getChapter } from '@/actions/get-chapter'
-import { Separator } from '@/components/ui/separator'
-import { VideoPlayer } from './_components/video-player'
-import { CurseEnrollButton } from './_components/curse-enroll-button'
-import { CourseProgressButton } from './_components/course-progress-button'
+import { Banner } from '@/components/banner';
+import { Preview } from '@/components/preview';
+import { getChapter } from '@/actions/get-chapter';
+import { Separator } from '@/components/ui/separator';
+import { VideoPlayer } from './_components/video-player';
+import { CurseEnrollButton } from './_components/curse-enroll-button';
+import { CourseProgressButton } from './_components/course-progress-button';
 
 export default async function ChapterIdPage({
-  params,
+  params
 }: {
   params: {
-    courseId: string
-    chapterId: string
-  }
+    courseId: string;
+    chapterId: string;
+  };
 }) {
-  const { userId } = auth()
+  const { userId } = auth();
 
   if (!userId) {
-    return redirect('/')
+    return redirect('/');
   }
 
   const {
@@ -31,19 +31,19 @@ export default async function ChapterIdPage({
     purchase,
     attachments,
     nextChapter,
-    userProgress,
+    userProgress
   } = await getChapter({
     userId,
     courseId: params.courseId,
-    chapterId: params.chapterId,
-  })
+    chapterId: params.chapterId
+  });
 
   if (!course || !chapter) {
-    return redirect('/')
+    return redirect('/');
   }
 
-  const isLocked = !chapter.isFree && !purchase
-  const completeOnEnd = !!purchase && !userProgress?.isCompleted
+  const isLocked = !chapter.isFree && !purchase;
+  const completeOnEnd = !!purchase && !userProgress?.isCompleted;
 
   return (
     <div>
@@ -77,6 +77,7 @@ export default async function ChapterIdPage({
 
             {purchase ? (
               <CourseProgressButton
+                userId={userId}
                 courseId={params.courseId}
                 chapterId={params.chapterId}
                 nextChapterId={nextChapter?.id}
@@ -101,7 +102,7 @@ export default async function ChapterIdPage({
               <Separator />
 
               <div className="p-4">
-                {attachments.map(attachment => (
+                {attachments.map((attachment) => (
                   <a
                     target="_blank"
                     key={attachment.id}
@@ -119,5 +120,5 @@ export default async function ChapterIdPage({
         </div>
       </div>
     </div>
-  )
+  );
 }
