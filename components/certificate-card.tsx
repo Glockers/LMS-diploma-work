@@ -1,6 +1,5 @@
 import { CertificateWithCourse } from '@/entities/certificate';
 import Image from 'next/image';
-import { Button } from './ui/button';
 import { DownloadCertificate } from './download-certificate';
 
 export interface CertificateCardProps {

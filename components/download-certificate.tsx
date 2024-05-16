@@ -3,14 +3,27 @@ import { Button } from './ui/button';
 import { usePDF } from 'react-to-pdf';
 import toast from 'react-hot-toast';
 import { CertificateCardProps, formatDate } from './certificate-card';
+import { useEffect, useState } from 'react';
+import { getUserById } from '@/actions/get-user';
 
 export function DownloadCertificate({ item }: CertificateCardProps) {
   const { toPDF, targetRef } = usePDF({ filename: 'certificate.pdf' });
+  const [fio, setFio] = useState('');
 
   const generatePDF = async () => {
     toPDF();
     toast.success('Сертификат скачен');
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      return (await getUserById(item.userId)).data;
+    };
+
+    fetchData().then((res) => {
+      setFio(`${res.name} ${res.lastname} ${res.surname}`);
+    });
+  }, [item.userId]);
 
   return (
     <>
@@ -21,7 +34,7 @@ export function DownloadCertificate({ item }: CertificateCardProps) {
         <div className="flex flex-col items-center">
           <h2 className="text-2xl font-bold mb-2">Certificate of Completion</h2>
           <p className="text-gray-600 mb-4">Awarded to</p>
-          <h3 className="text-3xl font-bold mb-4">John Doe</h3>
+          <h3 className="text-3xl font-bold mb-4">{fio}</h3>
           <p className="text-gray-600 mb-4">For successfully completing the</p>
           <h4 className="text-2xl font-bold mb-4">{item.course.title}</h4>
           <p className="text-gray-600 mb-4">On</p>

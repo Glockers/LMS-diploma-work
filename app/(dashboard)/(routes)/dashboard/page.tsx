@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
 import FormProfile from './components/form';
 import { redirect } from 'next/navigation';
-import { isExistUser } from '@/actions/is-exist-user';
+import { isExistUser } from '@/actions/get-user';
 
 async function isUserExist(userID: string) {
   return await isExistUser(userID);
