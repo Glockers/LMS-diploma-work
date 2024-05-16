@@ -1,12 +1,13 @@
 import { CertificateWithCourse } from '@/entities/certificate';
 import Image from 'next/image';
 import { Button } from './ui/button';
+import { DownloadCertificate } from './download-certificate';
 
-interface CertificateCardProps {
+export interface CertificateCardProps {
   item: CertificateWithCourse;
 }
 
-function formatDate(inputDate: Date): string {
+export function formatDate(inputDate: Date): string {
   const date = new Date(inputDate);
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -38,7 +39,7 @@ export function CertificateCard({ item }: CertificateCardProps) {
           Дата окончания: {formatDate(item.createdAt)}
         </p>
 
-        <Button className="p-5 mt-4">Выслать на почту</Button>
+        <DownloadCertificate item={item} />
       </div>
     </div>
   );

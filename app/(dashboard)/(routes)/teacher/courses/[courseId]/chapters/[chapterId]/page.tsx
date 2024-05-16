@@ -1,57 +1,57 @@
-import Link from 'next/link'
-import { auth } from '@clerk/nextjs'
-import { redirect } from 'next/navigation'
-import { ArrowLeft, Eye, LayoutDashboard, Video } from 'lucide-react'
+import Link from 'next/link';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import { ArrowLeft, Eye, LayoutDashboard, Video } from 'lucide-react';
 
-import { db } from '@/lib/db'
-import { Banner } from '@/components/banner'
-import { IconBadge } from '@/components/icon-badge'
-import { ChapterActions } from './_components/chapter-actions'
-import { ChapterTitleForm } from './_components/chapter-title-form'
-import { ChapterVideoForm } from './_components/chapter-video-form'
-import { ChapterAccessForm } from './_components/chapter-access-form'
-import { ChapterDescriptionForm } from './_components/chapter-description-form'
+import { db } from '@/lib/db';
+import { Banner } from '@/components/banner';
+import { IconBadge } from '@/components/icon-badge';
+import { ChapterActions } from './_components/chapter-actions';
+import { ChapterTitleForm } from './_components/chapter-title-form';
+import { ChapterVideoForm } from './_components/chapter-video-form';
+import { ChapterAccessForm } from './_components/chapter-access-form';
+import { ChapterDescriptionForm } from './_components/chapter-description-form';
 
 const ChapterIdPage = async ({
-  params,
+  params
 }: {
   params: {
-    courseId: string
-    chapterId: string
-  }
+    courseId: string;
+    chapterId: string;
+  };
 }) => {
-  const { userId } = auth()
+  const { userId } = auth();
 
   if (!userId) {
-    return redirect('/')
+    return redirect('/');
   }
 
   const chapter = await db.chapter.findUnique({
     where: {
       id: params.chapterId,
-      courseId: params.courseId,
+      courseId: params.courseId
     },
     include: {
       muxData: true,
       course: {
         select: {
-          userId: true,
-        },
-      },
-    },
-  })
+          userId: true
+        }
+      }
+    }
+  });
 
   if (!chapter || chapter.course.userId !== userId) {
-    return redirect('/')
+    return redirect('/');
   }
 
-  const requiredFields = [chapter.title, chapter.description, chapter.videoUrl]
+  const requiredFields = [chapter.title, chapter.description, chapter.videoUrl];
 
-  const totalFields = requiredFields.length
-  const completedFields = requiredFields.filter(Boolean).length
-  const completionText = `(${completedFields}/${totalFields})`
+  const totalFields = requiredFields.length;
+  const completedFields = requiredFields.filter(Boolean).length;
+  const completionText = `(${completedFields}/${totalFields})`;
 
-  const isCompleted = requiredFields.every(Boolean)
+  const isCompleted = requiredFields.every(Boolean);
 
   return (
     <>
@@ -141,7 +141,7 @@ const ChapterIdPage = async ({
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ChapterIdPage
+export default ChapterIdPage;

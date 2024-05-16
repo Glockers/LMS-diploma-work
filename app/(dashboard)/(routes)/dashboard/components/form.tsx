@@ -1,5 +1,6 @@
 'use client';
 
+import { saveUser } from '@/actions/save-user';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -12,7 +13,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosResponse } from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import * as z from 'zod';
@@ -30,7 +33,9 @@ const formSchema = z.object({
     .email('This is not a valid email.')
 });
 
-export default function FormProfile() {
+export default function FormProfile({ userId }: { userId: string }) {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,8 +50,21 @@ export default function FormProfile() {
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    toast.success('Контактная информация была изменена!');
-    console.log(values);
+    try {
+      const user = {
+        id: userId,
+        ...values
+      };
+      await saveUser(user);
+      router.replace('/');
+      toast.success('Контактная информация была изменена!');
+    } catch (err: any) {
+      if (err.response.status === 409) {
+        toast.error('Данные о пользователи уже заполнены!');
+      } else {
+        toast.error('Ошибка при создании профиля!');
+      }
+    }
   };
 
   return (

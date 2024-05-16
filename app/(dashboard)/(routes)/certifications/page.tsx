@@ -2,7 +2,7 @@ import { getMyCertificates } from '@/actions/get-my-certificates';
 import { CertificateCard } from '@/components/certificate-card';
 import { List } from '@/components/list';
 import { CertificateWithCourse } from '@/entities/certificate';
-import { auth } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import toast from 'react-hot-toast';
 

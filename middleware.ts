@@ -1,10 +1,17 @@
-import { authMiddleware } from '@clerk/nextjs';
-import { NextResponse } from 'next/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
 const publicRoutesThatShouldRedirectAfterAuth = ['/api/webhook'];
 
-export default authMiddleware({
-  publicRoutes: [...publicRoutesThatShouldRedirectAfterAuth]
+const isPublicRoute = createRouteMatcher([
+  '/sign-in(.*)',
+  '/sign-up(.*)',
+  '/api/webhook'
+]);
+
+export default clerkMiddleware((auth, request) => {
+  if (!isPublicRoute(request)) {
+    auth().protect();
+  }
 });
 
 export const config = {
