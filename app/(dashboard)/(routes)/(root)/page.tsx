@@ -1,33 +1,34 @@
-import { auth } from '@clerk/nextjs/server'
-import { redirect } from 'next/navigation'
-import { CheckCircle, Clock } from 'lucide-react'
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import { CheckCircle, Clock } from 'lucide-react';
 
-import { InfoCard } from './_components/info-card'
-import { CoursesList } from '@/components/courses-list'
-import { getDashboardCourses } from '@/actions/get-dashboard-courses'
+import { InfoCard } from './_components/info-card';
+import { CoursesList } from '@/components/courses-list';
+import { getDashboardCourses } from '@/actions/get-dashboard-courses';
+import toast from 'react-hot-toast';
 
 export default async function DashboardPage() {
-  const { userId } = auth()
+  const { userId } = auth();
 
   if (!userId) {
-    return redirect('/')
+    return redirect('/');
   }
 
   const { completedCourses, coursesInProgress } = await getDashboardCourses(
-    userId,
-  )
+    userId
+  );
 
   return (
     <div className="p-6 space-y-4">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <InfoCard
           icon={Clock}
-          label="In Progress"
+          label="В прогрессе"
           numberOfItems={coursesInProgress.length}
         />
 
         <InfoCard
-          label="Completed"
+          label="Пройдены"
           variant="success"
           icon={CheckCircle}
           numberOfItems={completedCourses.length}
@@ -36,5 +37,5 @@ export default async function DashboardPage() {
 
       <CoursesList items={[...completedCourses, ...coursesInProgress]} />
     </div>
-  )
+  );
 }

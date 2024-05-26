@@ -1,33 +1,33 @@
-'use client'
+'use client';
 
-import qs from 'query-string'
-import { Search } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import qs from 'query-string';
+import { Search } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
-import { Input } from '@/components/ui/input'
-import { useDebounce } from '@/hooks/use-debounce'
+import { Input } from '@/components/ui/input';
+import { useDebounce } from '@/hooks/use-debounce';
 
 export const SearchInput = () => {
-  const [value, setValue] = useState('')
-  const [firstRender, setFirstRender] = useState(true)
+  const [value, setValue] = useState('');
+  const [firstRender, setFirstRender] = useState(true);
 
-  const debounceValue = useDebounce(value, 500)
+  const debounceValue = useDebounce(value, 500);
 
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const currentCategoryId = searchParams.get('categoryId')
+  const currentCategoryId = searchParams.get('categoryId');
 
   useEffect(() => {
     if (firstRender) {
-      const title = searchParams.get('title')
+      const title = searchParams.get('title');
 
-      setValue(title || '')
-      setFirstRender(false)
+      setValue(title || '');
+      setFirstRender(false);
     }
-  }, [firstRender, searchParams])
+  }, [firstRender, searchParams]);
 
   useEffect(() => {
     const url = qs.stringifyUrl(
@@ -35,17 +35,17 @@ export const SearchInput = () => {
         url: pathname,
         query: {
           title: debounceValue,
-          categoryId: currentCategoryId,
-        },
+          categoryId: currentCategoryId
+        }
       },
       {
         skipNull: true,
-        skipEmptyString: true,
-      },
-    )
+        skipEmptyString: true
+      }
+    );
 
-    router.push(url)
-  }, [currentCategoryId, debounceValue, pathname, router])
+    router.push(url);
+  }, [currentCategoryId, debounceValue, pathname, router]);
 
   return (
     <div className="relative">
@@ -54,10 +54,10 @@ export const SearchInput = () => {
       <Input
         value={value}
         type="search"
-        placeholder="Search for a course"
-        onChange={e => setValue(e.target.value)}
+        placeholder="Поиск курса"
+        onChange={(e) => setValue(e.target.value)}
         className="w-full md:w-[300px] pl-9 rounded-full bg-slate-100 focus-visible:ring-slate-200"
       />
     </div>
-  )
-}
+  );
+};

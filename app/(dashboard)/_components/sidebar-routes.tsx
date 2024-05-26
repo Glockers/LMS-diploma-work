@@ -1,7 +1,14 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { Layout, Compass, List, BarChart } from 'lucide-react';
+import {
+  Layout,
+  Compass,
+  List,
+  BarChart,
+  Presentation,
+  User
+} from 'lucide-react';
 
 import { SidebarItem } from './sidebar-item';
 
@@ -26,13 +33,23 @@ const guestRoutes = [
 const teacherRoutes = [
   {
     icon: List,
-    label: 'Courses',
+    label: 'Курсы',
     href: '/teacher/courses'
   },
   {
     icon: BarChart,
-    label: 'Analytics',
+    label: 'Аналитика',
     href: '/teacher/analytics'
+  },
+  {
+    icon: User,
+    label: 'Пользователи',
+    href: 'https://dashboard.clerk.com/apps/app_2fflEw8rK2IAHe0vnKhVbgEf7ld/instances/ins_2fflEwC15vOQLvFIAkOxSluUDDm/users'
+  },
+  {
+    icon: Presentation,
+    label: 'Лекции',
+    href: '/teacher/lectures'
   }
 ];
 

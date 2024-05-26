@@ -1,51 +1,50 @@
-import { auth } from '@clerk/nextjs/server'
-import { redirect } from 'next/navigation'
-import { Chapter, Course, UserProgress } from '@prisma/client'
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import { Chapter, Course, UserProgress } from '@prisma/client';
 
-import { db } from '@/lib/db'
-import { CourseSidebarItem } from './course-sidebar-item'
-import { CourseProgress } from '@/components/course-progress'
+import { db } from '@/lib/db';
+import { CourseSidebarItem } from './course-sidebar-item';
+import { CourseProgress } from '@/components/course-progress';
+import { CourseSidebarTest } from './course-sidebar-test';
 
 interface CourseSidebarProps {
-  progressCount: number
+  progressCount: number;
   course: Course & {
     chapters: (Chapter & {
-      userProgress: UserProgress[] | null
-    })[]
-  }
+      userProgress: UserProgress[] | null;
+    })[];
+  };
 }
 
 export const CourseSidebar = async ({
   course,
-  progressCount,
+  progressCount
 }: CourseSidebarProps) => {
-  const { userId } = auth()
+  const { userId } = auth();
 
-  if (!userId) return redirect('/')
+  if (!userId) return redirect('/');
 
   const purchase = await db.purchase.findUnique({
     where: {
       userId_courseId: {
         userId,
-        courseId: course.id,
-      },
-    },
-  })
+        courseId: course.id
+      }
+    }
+  });
 
   return (
     <div className="flex flex-col h-full overflow-y-auto border-r shadow-sm select-none">
       <div className="flex flex-col p-8 border-b">
         <h1 className="font-semibold">{course.title}</h1>
-
         {purchase && (
           <div className="mt-10">
             <CourseProgress variant="success" value={progressCount} />
           </div>
         )}
       </div>
-
       <div className="flex flex-col w-full">
-        {course.chapters.map(chapter => (
+        {course.chapters.map((chapter) => (
           <CourseSidebarItem
             id={chapter.id}
             key={chapter.id}
@@ -55,7 +54,14 @@ export const CourseSidebar = async ({
             isCompleted={!!chapter.userProgress?.[0]?.isCompleted}
           />
         ))}
+        <CourseSidebarTest
+          id={''}
+          label={'Тест'}
+          courseId={''}
+          isLocked={false}
+          isCompleted={false}
+        />
       </div>
     </div>
-  )
-}
+  );
+};

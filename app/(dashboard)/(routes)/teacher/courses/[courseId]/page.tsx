@@ -1,64 +1,64 @@
-import { auth } from '@clerk/nextjs/server'
-import { redirect } from 'next/navigation'
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 import {
   File,
   ListChecks,
   LayoutDashboard,
-  CircleDollarSign,
-} from 'lucide-react'
+  CircleDollarSign
+} from 'lucide-react';
 
-import { db } from '@/lib/db'
-import { Banner } from '@/components/banner'
-import { Actions } from './_components/actions'
-import { IconBadge } from '@/components/icon-badge'
-import { TitleForm } from './_components/title-form'
-import { ImageForm } from './_components/image-form'
-import { PriceForm } from './_components/price-form'
-import { CategoryForm } from './_components/category-form'
-import { ChaptersForm } from './_components/chapters-form'
-import { AttachmentForm } from './_components/attachment-form'
-import { DescriptionForm } from './_components/description-form'
+import { db } from '@/lib/db';
+import { Banner } from '@/components/banner';
+import { Actions } from './_components/actions';
+import { IconBadge } from '@/components/icon-badge';
+import { TitleForm } from './_components/title-form';
+import { ImageForm } from './_components/image-form';
+import { PriceForm } from './_components/price-form';
+import { CategoryForm } from './_components/category-form';
+import { ChaptersForm } from './_components/chapters-form';
+import { AttachmentForm } from './_components/attachment-form';
+import { DescriptionForm } from './_components/description-form';
 
 const CourseIdPage = async ({
-  params,
+  params
 }: {
   params: {
-    courseId: string
-  }
+    courseId: string;
+  };
 }) => {
-  const { userId } = auth()
+  const { userId } = auth();
 
   if (!userId) {
-    return redirect('/')
+    return redirect('/');
   }
 
   const course = await db.course.findUnique({
     where: {
       userId,
-      id: params.courseId,
+      id: params.courseId
     },
     include: {
       attachments: {
         orderBy: {
-          createdAt: 'desc',
-        },
+          createdAt: 'desc'
+        }
       },
       chapters: {
         orderBy: {
-          position: 'asc',
-        },
-      },
-    },
-  })
+          position: 'asc'
+        }
+      }
+    }
+  });
 
   const categories = await db.category.findMany({
     orderBy: {
-      name: 'asc',
-    },
-  })
+      name: 'asc'
+    }
+  });
 
   if (!course || course.userId !== userId) {
-    return redirect('/')
+    return redirect('/');
   }
 
   const requiredFields = [
@@ -67,32 +67,32 @@ const CourseIdPage = async ({
     course.imageUrl,
     course.categoryId,
     course.description,
-    course.chapters.some(chapter => chapter.isPublished),
-  ]
+    course.chapters.some((chapter) => chapter.isPublished)
+  ];
 
-  const totalFields = requiredFields.length
-  const completedFields = requiredFields.filter(Boolean).length
+  const totalFields = requiredFields.length;
+  const completedFields = requiredFields.filter(Boolean).length;
 
-  const completionText = `(${completedFields}/${totalFields})`
+  const completionText = `(${completedFields}/${totalFields})`;
 
-  const isCompleted = requiredFields.every(Boolean)
+  const isCompleted = requiredFields.every(Boolean);
 
   return (
     <>
       {!course.isPublished && (
         <Banner
           variant="warning"
-          label="This course is unpublished. It will not be visible in the students."
+          label="Этот курс не опубликован. У студентов этого не будет видно."
         />
       )}
 
       <div className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-y-2">
-            <h1 className="text-2xl font-medium">Course setup</h1>
+            <h1 className="text-2xl font-medium">Настройки курса</h1>
 
             <span className="text-sm text-slate-700">
-              Complete all fields {completionText}
+              Заполенные поля {completionText}
             </span>
           </div>
 
@@ -116,9 +116,9 @@ const CourseIdPage = async ({
             <CategoryForm
               initialData={course}
               courseId={course.id}
-              options={categories.map(category => ({
+              options={categories.map((category) => ({
                 label: category.name,
-                value: category.id,
+                value: category.id
               }))}
             />
           </div>
@@ -157,7 +157,7 @@ const CourseIdPage = async ({
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CourseIdPage
+export default CourseIdPage;

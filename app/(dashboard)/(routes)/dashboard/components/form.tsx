@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AxiosResponse } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -21,16 +20,16 @@ import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 const formSchema = z.object({
-  name: z.string().min(1, 'name is required'),
-  lastname: z.string().min(1, 'lastname is required'),
-  surname: z.string().min(1, 'surname is required'),
+  name: z.string().min(1, 'Это поле должно быть заполеным'),
+  lastname: z.string().min(1, 'Это поле должно быть заполеным'),
+  surname: z.string().min(1, 'Это поле должно быть заполеным'),
   mobilePhone: z
     .string()
     .refine((value) => /^[+]{1}(?:[0-9-()/.]\s?){6,15}[0-9]{1}$/.test(value)),
   email: z
     .string()
-    .min(1, { message: 'This field has to be filled.' })
-    .email('This is not a valid email.')
+    .min(1, { message: 'Это поле должно быть заполеным.' })
+    .email('Не валидная форма почты.')
 });
 
 export default function FormProfile({ userId }: { userId: string }) {
@@ -75,13 +74,13 @@ export default function FormProfile({ userId }: { userId: string }) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Имя</FormLabel>
 
               <FormControl>
                 <Input disabled={isSubmitting} placeholder="Maxim" {...field} />
               </FormControl>
 
-              <FormDescription>What is your name?</FormDescription>
+              <FormDescription>Ваше имя?</FormDescription>
 
               <FormMessage />
             </FormItem>
@@ -93,7 +92,7 @@ export default function FormProfile({ userId }: { userId: string }) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>LastName</FormLabel>
+              <FormLabel>Фамилия</FormLabel>
 
               <FormControl>
                 <Input
@@ -103,7 +102,7 @@ export default function FormProfile({ userId }: { userId: string }) {
                 />
               </FormControl>
 
-              <FormDescription>What is your last name?</FormDescription>
+              <FormDescription>Ваша фамилия?</FormDescription>
 
               <FormMessage />
             </FormItem>
@@ -114,7 +113,7 @@ export default function FormProfile({ userId }: { userId: string }) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Surname</FormLabel>
+              <FormLabel>Отчество</FormLabel>
 
               <FormControl>
                 <Input
@@ -124,7 +123,7 @@ export default function FormProfile({ userId }: { userId: string }) {
                 />
               </FormControl>
 
-              <FormDescription>What is your surname?</FormDescription>
+              <FormDescription>Ваше отчество?</FormDescription>
 
               <FormMessage />
             </FormItem>
@@ -135,7 +134,7 @@ export default function FormProfile({ userId }: { userId: string }) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mobile Phone</FormLabel>
+              <FormLabel>Контактный телефон</FormLabel>
 
               <FormControl>
                 <Input
@@ -145,7 +144,7 @@ export default function FormProfile({ userId }: { userId: string }) {
                 />
               </FormControl>
 
-              <FormDescription>What is your phone?</FormDescription>
+              <FormDescription>Ваш контактный телефон?</FormDescription>
 
               <FormMessage />
             </FormItem>
@@ -156,7 +155,7 @@ export default function FormProfile({ userId }: { userId: string }) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Контактная Почта</FormLabel>
 
               <FormControl>
                 <Input
@@ -166,7 +165,7 @@ export default function FormProfile({ userId }: { userId: string }) {
                 />
               </FormControl>
 
-              <FormDescription>What is your mail?</FormDescription>
+              <FormDescription>Ваша контактная почта?</FormDescription>
 
               <FormMessage />
             </FormItem>
@@ -175,12 +174,12 @@ export default function FormProfile({ userId }: { userId: string }) {
         <div className="flex items-center gap-x-2">
           <Link href="/">
             <Button type="button" variant="ghost">
-              Cancel
+              Отменить
             </Button>
           </Link>
 
           <Button type="submit" disabled={!isValid || isSubmitting}>
-            Continue
+            Продолжить
           </Button>
         </div>
       </form>

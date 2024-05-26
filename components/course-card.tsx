@@ -5,6 +5,7 @@ import { BookOpen } from 'lucide-react';
 import { formatPrice } from '@/lib/format';
 import { IconBadge } from '@/components/icon-badge';
 import { CourseProgress } from '@/components/course-progress';
+import toast from 'react-hot-toast';
 
 interface CourseCardProps {
   id: string;

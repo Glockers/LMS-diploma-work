@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { LogOut } from 'lucide-react'
-import { usePathname } from 'next/navigation'
-import { UserButton, useAuth } from '@clerk/nextjs'
+import Link from 'next/link';
+import { LogOut } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { UserButton, useAuth } from '@clerk/nextjs';
 
-import { isTeacher } from '@/lib/teacher'
-import { SearchInput } from './search-input'
-import { Button } from '@/components/ui/button'
+import { isTeacher } from '@/lib/teacher';
+import { SearchInput } from './search-input';
+import { Button } from '@/components/ui/button';
 
 export const NavbarRoutes = () => {
-  const { userId } = useAuth()
-  const pathname = usePathname()
+  const { userId } = useAuth();
+  const pathname = usePathname();
 
-  const isSearchPage = pathname === '/search'
-  const isCoursePage = pathname?.includes('/courses')
-  const isTeacherPage = pathname?.startsWith('/teacher')
+  const isSearchPage = pathname === '/search';
+  const isCoursePage = pathname?.includes('/courses');
+  const isTeacherPage = pathname?.startsWith('/teacher');
 
   return (
     <>
@@ -30,13 +30,13 @@ export const NavbarRoutes = () => {
           <Link href="/">
             <Button size="sm" variant="ghost">
               <LogOut className="w-4 h-4 mr-2" />
-              <span>Exit</span>
+              <span>Выйти</span>
             </Button>
           </Link>
         ) : isTeacher(userId) ? (
           <Link href="/teacher/courses">
             <Button size="sm" variant="ghost">
-              Teacher Mode
+              Режим преподавателя
             </Button>
           </Link>
         ) : null}
@@ -44,5 +44,5 @@ export const NavbarRoutes = () => {
         <UserButton afterSignOutUrl="/" />
       </div>
     </>
-  )
-}
+  );
+};
