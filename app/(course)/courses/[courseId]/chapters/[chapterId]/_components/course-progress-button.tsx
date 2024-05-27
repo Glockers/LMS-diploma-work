@@ -44,31 +44,18 @@ export const CourseProgressButton = ({
       );
 
       if (!isCompleted && !nextChapterId) {
-        try {
-          await Server.post('/certificate', {
-            userId,
-            courseId
-          });
-          toast.success('Курс пройден!');
-          onOpen();
-        } catch (err) {
-          if (
-            isAxiosError(err) &&
-            err.response?.status === HttpStatusCode.Conflict
-          ) {
-            toast.error('Вы уже получали сертификат!');
-          } else {
-            toast.error('Произошла ошибка');
-            console.log(err);
-          }
-        }
+        toast.success(
+          'Теоритический материал пройден! Завершите тест, чтобы получить сертификат',
+          { duration: 10000 }
+        );
+      } else {
+        toast.success('Прогресс обновлен');
       }
 
       if (!isCompleted && nextChapterId) {
         router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
       }
 
-      toast.success('Progress updated');
       router.refresh();
     } catch (error) {
       toast.error('Something went wrong');

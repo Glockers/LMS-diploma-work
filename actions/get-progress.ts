@@ -1,38 +1,26 @@
-import { db } from '@/lib/db'
+import { Server } from '@/lib/axios';
+
+export interface ProgressUser {
+  theoryResult: number;
+  testResult: number;
+  resultProgress: number;
+}
 
 export const getProgress = async (
   userId: string,
-  courseId: string,
-): Promise<number> => {
+  courseId: string
+): Promise<ProgressUser | null> => {
   try {
-    const publishedChapters = await db.chapter.findMany({
-      where: {
-        courseId,
-        isPublished: true,
-      },
-      select: {
-        id: true,
-      },
-    })
-
-    const publishedChapterIds = publishedChapters.map(({ id }) => id)
-
-    const validCompletedChapters = await db.userProgress.count({
-      where: {
+    const result = await Server.get<ProgressUser>(`/chapter/progress`, {
+      params: {
         userId,
-        isCompleted: true,
-        chapterId: {
-          in: publishedChapterIds,
-        },
-      },
-    })
+        courseId
+      }
+    });
 
-    const progressPercentage =
-      (validCompletedChapters / publishedChapters.length) * 100
-
-    return progressPercentage
+    return result.data;
   } catch (error) {
-    console.error('[GET_PROGRESS]', error)
-    return 0
+    console.error('[GET_PROGRESS]', error);
+    return null;
   }
-}
+};

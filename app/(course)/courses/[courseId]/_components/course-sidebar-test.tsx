@@ -26,7 +26,7 @@ export function CourseSidebarTest({
   const isActive = pathname?.includes(id);
 
   const onClick = () => {
-    router.push(`/courses/${courseId}/test`);
+    isLocked ? null : router.push(`/courses/${courseId}/test`);
   };
 
   return (

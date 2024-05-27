@@ -6,9 +6,10 @@ import { db } from '@/lib/db';
 import { CourseSidebarItem } from './course-sidebar-item';
 import { CourseProgress } from '@/components/course-progress';
 import { CourseSidebarTest } from './course-sidebar-test';
+import { ProgressUser } from '@/actions/get-progress';
 
 interface CourseSidebarProps {
-  progressCount: number;
+  progressCount: ProgressUser | null;
   course: Course & {
     chapters: (Chapter & {
       userProgress: UserProgress[] | null;
@@ -21,9 +22,7 @@ export const CourseSidebar = async ({
   progressCount
 }: CourseSidebarProps) => {
   const { userId } = auth();
-
   if (!userId) return redirect('/');
-
   const purchase = await db.purchase.findUnique({
     where: {
       userId_courseId: {
@@ -39,7 +38,10 @@ export const CourseSidebar = async ({
         <h1 className="font-semibold">{course.title}</h1>
         {purchase && (
           <div className="mt-10">
-            <CourseProgress variant="success" value={progressCount} />
+            <CourseProgress
+              variant="success"
+              value={progressCount?.resultProgress || 0}
+            />
           </div>
         )}
       </div>
@@ -57,9 +59,9 @@ export const CourseSidebar = async ({
         <CourseSidebarTest
           id={''}
           label={'Тест'}
-          courseId={''}
-          isLocked={false}
-          isCompleted={false}
+          courseId={course.id}
+          isLocked={progressCount?.theoryResult !== 100}
+          isCompleted={Boolean(progressCount?.testResult)}
         />
       </div>
     </div>
