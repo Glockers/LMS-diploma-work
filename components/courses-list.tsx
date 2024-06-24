@@ -33,7 +33,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 
       {items.length === 0 && (
         <div className="mt-10 text-sm text-center text-muted-foreground">
-          No courses found
+          Курсы не найдены
         </div>
       )}
     </div>

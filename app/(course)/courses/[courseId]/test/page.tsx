@@ -3,6 +3,7 @@ import { Test } from './test-page';
 import { redirect } from 'next/navigation';
 import { Server } from '@/lib/axios';
 import { getUserProgressTest } from '@/actions/get-user-progress';
+import { Statistics } from './statistic';
 
 type Props = {
   params: {
@@ -43,9 +44,12 @@ export default async function TestPage({ params: { courseId } }: Props) {
 
   const course = await getCourse(courseId);
   const passedTest = await getUserProgressTest(userId, courseId);
-  const questions = await getQuestions(courseId, countQuestion);
 
-  console.log(questions);
+  if (passedTest.data.isCompleted) {
+    return <Statistics progress={passedTest.data} />;
+  }
+
+  const questions = await getQuestions(courseId, countQuestion);
 
   const testOptions = {
     timeStart: new Date(),

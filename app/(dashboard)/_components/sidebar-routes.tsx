@@ -4,9 +4,12 @@ import { usePathname } from 'next/navigation';
 import {
   Layout,
   Compass,
+  Search,
   List,
   BarChart,
   Presentation,
+  Ticket,
+  Monitor,
   User
 } from 'lucide-react';
 
@@ -24,9 +27,14 @@ const guestRoutes = [
     href: '/search'
   },
   {
-    icon: Compass,
+    icon: Ticket,
     label: 'Cертификаты',
     href: '/certifications'
+  },
+  {
+    icon: Monitor,
+    label: 'Лекции',
+    href: '/lections'
   }
 ];
 
@@ -50,6 +58,11 @@ const teacherRoutes = [
     icon: Presentation,
     label: 'Лекции',
     href: '/teacher/lectures'
+  },
+  {
+    icon: Presentation,
+    label: 'Сертификаты',
+    href: '/teacher/certifications'
   }
 ];
 

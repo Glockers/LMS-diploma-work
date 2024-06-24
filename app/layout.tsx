@@ -1,24 +1,24 @@
-import './globals.css'
+import './globals.css';
 
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { ClerkProvider } from '@clerk/nextjs'
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import { ClerkProvider } from '@clerk/nextjs';
 
-import { ToastProvider } from '@/components/providers/toaster-provider'
-import { ConfettiProvider } from '@/components/providers/confetti-provider'
-import { NProgressBarProvider } from '@/components/providers/nprogress-bar-provider'
+import { ToastProvider } from '@/components/providers/toaster-provider';
+import { ConfettiProvider } from '@/components/providers/confetti-provider';
+import { NProgressBarProvider } from '@/components/providers/nprogress-bar-provider';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'LMS Platform',
-  description: 'LMS Platform built with Next.js and Clerk',
-}
+  title: 'Diplom work | Online Course',
+  description: 'Diplom work | Online Course'
+};
 
 export default function RootLayout({
-  children,
+  children
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <ClerkProvider>
@@ -32,5 +32,5 @@ export default function RootLayout({
         </body>
       </html>
     </ClerkProvider>
-  )
+  );
 }

@@ -11,6 +11,7 @@ import { getUserProgressTest } from '@/actions/get-user-progress';
 
 type Props = {
   progress: any;
+  testFunc?: () => {};
 };
 
 export function Statistics({ progress }: Props) {
@@ -19,6 +20,7 @@ export function Statistics({ progress }: Props) {
   useEffect(() => {
     async function fetch() {
       const res = await getUserProgressTest(progress.userId, progress.courseId);
+      console.log(res.data);
       setAccuracy(res.data.correctAnswers * 10);
     }
     fetch();
